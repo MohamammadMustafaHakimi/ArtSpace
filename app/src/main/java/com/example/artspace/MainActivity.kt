@@ -30,6 +30,19 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+/*
+* Use all of this: modifier = Modifier !!!!
+            .statusBarsPadding() // gives the rootElement in this case the Column a padding similar to the statur bar, where the battery and wifi is shown
+            .padding(horizontal = 40.dp)
+            .verticalScroll(rememberScrollState())
+            .safeDrawingPadding(), // adds padding to avoid system UI areas, and device specific unsafe drawing areas, like curved screen edges
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+*
+*
+* */
+
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
