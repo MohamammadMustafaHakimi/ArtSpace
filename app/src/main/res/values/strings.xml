@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">ArtSpace</string>
+
+    <string name="the_wanderer">The Wanderer</string>
+    <string name="casper_david_friedrich">Casper David Friedrich</string>
+    <string name="the_wanderer_date">1818</string>
+
+
+    <string name="night_hawks">Night Hawks</string>
+    <string name="edward_hopper">Edward Hopper</string>
+    <string name="night_hawks_date">1942</string>
+
+    <string name="calling_st_mathew">The Calling of St. Mathew</string>
+    <string name="caravaggio">Caravaggio</string>
+    <string name="calling_st_mathew_date">1599–1600</string>
+
+
+    <string name="cyclops">Cyclops</string>
+    <string name="thomas_bull">Thomas Bull</string>
+    <string name="cyclops_date">1898-1914</string>
+
+    <string name="narcissus">Narcissus</string>
+    <string name="caravaggio_narcissus">Caravaggio</string>
+    <string name="narcissus_date">1597–1599</string>
+
+    <string name="fallen_angel">Fallen Angel</string>
+    <string name="alexandre_cabanel">Alexandre Cabanel</string>
+    <string name="fallen_angel_date">1847</string>
+
+    <string name="milk_maid">The Milk Maid</string>
+    <string name="johannes_vermeer">Johannes Vermeer</string>
+    <string name="milk_maid_date">1658–1660</string>
+
+    <string name="icarus_death">The Death of Icarus</string>
+<!--    <string name="alexandre_cabanel">Alexandre Cabanel</string> same as the creator of fallen angel-->
+    <string name="icarus_death_date">1847</string>
+</resources>
