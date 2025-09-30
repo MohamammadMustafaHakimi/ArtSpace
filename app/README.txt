@@ -8,3 +8,5 @@
    Cross axis = vertical → control alignment across this axis with verticalAlignment.
 
 -> (alt + j) is used to select similar strings; simply select a string and then alt plus j
+
+-> custom typographies can be created outside the Typography

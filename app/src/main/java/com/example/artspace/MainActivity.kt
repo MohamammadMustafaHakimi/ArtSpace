@@ -11,7 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.artspace.data.Masterpiece
 import com.example.artspace.ui.theme.ArtSpaceTheme
+import com.example.artspace.ui.theme.MasterpieceItem
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +45,9 @@ class MainActivity : ComponentActivity() {
 *
 * */
 
+
+
+
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -56,5 +61,13 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     ArtSpaceTheme {
         Greeting("Android")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MasterpieceItemReview() {
+    ArtSpaceTheme {
+        MasterpieceItem(Masterpiece(R.drawable.redon_cyclops, R.string.cyclops, R.string.odelon_redon, R.string.cyclops_date))
     }
 }
