@@ -84,7 +84,7 @@ import kotlinx.coroutines.launch
             onPrevious = {
                 scope.launch {
                     if (state.currentPage == 0) { state.scrollToPage(lastIndex) }
-                    // else state.animateScrollToPage(state.currentPage - 1)
+                    // else state.animateScrollToPage(state.currentPage - 1)  // same thing as scrollToPage but not a very nice animation
                     else state.scrollToPage(state.currentPage - 1)
                 }
             },

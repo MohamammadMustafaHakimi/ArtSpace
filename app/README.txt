@@ -10,3 +10,11 @@
 -> (alt + j) is used to select similar strings; simply select a string and then alt plus j
 
 -> custom typographies can be created outside the Typography
+-> using the Pager composable for creating beautiful pager ui
+
+2. Useful links
+-> pager
+
+
+3. Upgrades and improvements:
+-> creating for different screens
