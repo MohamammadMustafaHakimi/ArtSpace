@@ -38,13 +38,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CardDefaults
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.ContentScale
+import kotlinx.coroutines.launch
 
 
 // UI features
 // button next and previous; future: swipe next and previous
 // how to keep the buttons on the screen while the cards are displayed one per screen
 // animations for pager change
-//
+// making the corners of the image container pointed not round
+// fixing the space between ArtInformation and button
 
 
 
@@ -52,11 +58,15 @@ import androidx.compose.foundation.lazy.items
 
 
 @Composable fun ArtApp(modifier: Modifier = Modifier.safeDrawingPadding().safeContentPadding()) {
-    val state = rememberPagerState(initialPage = 1) { masterpieces.size }
+    val state = rememberPagerState(initialPage = 0) { masterpieces.size }
+    val scope = rememberCoroutineScope()
+    val lastIndex = masterpieces.size -1 // last index
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(15.dp),
+            .padding(top = 55.dp, start = 10.dp, end = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HorizontalPager(
@@ -64,19 +74,28 @@ import androidx.compose.foundation.lazy.items
                 .fillMaxWidth()
                 .weight(1f),
             state = state,
-            userScrollEnabled = false
+            userScrollEnabled = true
         ) { page -> // userScrollEnabled controls if the swiping for changing each page should work or no
-            Box(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .background(Color.Blue)
-            ) {
-                val masterpiece = masterpieces[page]
-                MasterpieceItem(masterpiece)
-            }
+            val masterpiece = masterpieces[page]
+            MasterpieceItem(masterpiece)
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        ButtonComponents()
+        Spacer(modifier = Modifier.height(20.dp))
+        ButtonComponents(
+            onPrevious = {
+                scope.launch {
+                    if (state.currentPage == 0) { state.scrollToPage(lastIndex) }
+                    // else state.animateScrollToPage(state.currentPage - 1)
+                    else state.scrollToPage(state.currentPage - 1)
+                }
+            },
+            onNext = {
+                scope.launch {
+                    if (state.currentPage == lastIndex) { state.scrollToPage(0) }
+                    // else state.animateScrollToPage(state.currentPage + 1)
+                    else state.scrollToPage(state.currentPage + 1)
+                }
+            }
+        )
 
     }
 }
@@ -87,9 +106,13 @@ import androidx.compose.foundation.lazy.items
         .wrapContentSize(Alignment.Center)
     ) {
     Card(
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(R.color.white)
+        )
     ) {
-        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             ImageRes(masterpiece.imageRes)
+            Spacer(modifier = Modifier.height(80.dp))
             ArtInformation(masterpiece.artNameRes, masterpiece.artistNameRes, masterpiece.dateMadeRes)
 //        ButtonComponents(modifier = modifier)
         }
@@ -101,14 +124,27 @@ import androidx.compose.foundation.lazy.items
     @DrawableRes imageRes: Int,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = Modifier.background(colorResource(R.color.white))) {
+    Box(modifier = Modifier
+        .background(colorResource(R.color.app_background))
+        .padding(25.dp)
+        .shadow(
+            elevation = 12.dp,
+            shape = MaterialTheme.shapes.medium, // Rounded corners if needed
+            clip = true
+        )
+        .background(Color.White) // background so shadow shows properly
+        .fillMaxWidth()
+        .height(400.dp)
+
+    ) {
         Image(
             painter = painterResource(imageRes),
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(15.dp)
-                .height(500.dp)
+                .padding(25.dp)
+                .height(400.dp),
+            contentScale = ContentScale.FillBounds
 
         )
     }
@@ -116,7 +152,12 @@ import androidx.compose.foundation.lazy.items
 
 
 @Composable fun ArtInformation(artNameRes: Int, artistNameRes: Int, dateMadeRes: Int) {
-    Column(modifier = Modifier.background(colorResource(R.color.teal_200)).padding(15.dp).width(200.dp)) {
+    Column(
+        modifier = Modifier
+            .width(280.dp)
+            .background(colorResource(R.color.art_info_background))
+            .padding(20.dp)
+    ) {
         Row() {
             Text(text = stringResource(artNameRes), style = MaterialTheme.typography.bodyLarge)
         }
@@ -129,24 +170,18 @@ import androidx.compose.foundation.lazy.items
 
 
 
-@Composable fun ButtonComponents() {
+@Composable fun ButtonComponents(onPrevious: () -> Unit, onNext: () -> Unit) {
     Row(modifier = Modifier, horizontalArrangement = Arrangement.SpaceBetween) {
-        Button(onClick = {/**/}, modifier = Modifier.weight(1f)) {
+        Button(onClick = onPrevious, modifier = Modifier.weight(1f)) {
             Text(text = stringResource(R.string.previous))
         }
         Spacer(modifier = Modifier.width(16.dp))
-        Button(onClick = {/**/}, modifier = Modifier.weight(1f)) {
+        Button(onClick = onNext, modifier = Modifier.weight(1f)) {
             Text(text = stringResource(R.string.next))
         }
     }
 }
 
-@Preview(showBackground = true)
-@Composable fun ButtonComponentsPreview() {
-    ArtSpaceTheme {
-        ButtonComponents()
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
