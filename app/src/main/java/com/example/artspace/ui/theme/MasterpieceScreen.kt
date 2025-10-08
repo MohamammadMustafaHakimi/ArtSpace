@@ -42,7 +42,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import com.example.artspace.view.MasterpieceViewModel
 import kotlinx.coroutines.launch
+
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 // UI features
@@ -57,9 +60,14 @@ import kotlinx.coroutines.launch
 
 
 
-@Composable fun ArtApp(modifier: Modifier = Modifier.safeDrawingPadding().safeContentPadding()) {
+@Composable fun ArtApp(
+    modifier: Modifier = Modifier.safeDrawingPadding().safeContentPadding(),
+    viewModel: MasterpieceViewModel = viewModel()
+
+) {
     val state = rememberPagerState(initialPage = 0) { masterpieces.size }
     val scope = rememberCoroutineScope()
+
     val lastIndex = masterpieces.size -1 // last index
 
 
