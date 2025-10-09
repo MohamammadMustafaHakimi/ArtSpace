@@ -39,11 +39,15 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CardDefaults
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import com.example.artspace.view.MasterpieceViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.getValue
+
 
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -68,7 +72,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
     val state = rememberPagerState(initialPage = 0) { masterpieces.size }
     val scope = rememberCoroutineScope()
 
+    val uiState by viewModel.uiState.collectAsState() // collecting the state from the viewModel
     val lastIndex = masterpieces.size -1 // last index
+
+    LaunchedEffect(uiState.currentIndex) {
+        state.scrollToPage(uiState.currentIndex)
+    }
+
+    LaunchedEffect(state.currentPage) {
+        if (state.currentPage != uiState.currentIndex) {
+            viewModel.setMasterpieceIndex(state.currentPage)
+        }
+    }
 
 
     Column(
@@ -84,26 +99,31 @@ import androidx.lifecycle.viewmodel.compose.viewModel
             state = state,
             userScrollEnabled = true
         ) { page -> // userScrollEnabled controls if the swiping for changing each page should work or no
-            val masterpiece = masterpieces[page]
+            val masterpiece = uiState.masterpieces[page]
             MasterpieceItem(masterpiece)
         }
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         ButtonComponents(
             onPrevious = {
-                scope.launch {
-                    if (state.currentPage == 0) { state.scrollToPage(lastIndex) }
-                    // else state.animateScrollToPage(state.currentPage - 1)  // same thing as scrollToPage but not a very nice animation
-                    else state.scrollToPage(state.currentPage - 1)
-                }
+                viewModel.previousMasterpiece()
+//                scope.launch {
+////                    if (state.currentPage == 0) { state.scrollToPage(lastIndex) }
+////                    // else state.animateScrollToPage(state.currentPage - 1)  // same thing as scrollToPage but not a very nice animation
+////                    else state.scrollToPage(state.currentPage - 1)
+////                    viewModel.previousMasterpiece()
+//                }
             },
             onNext = {
-                scope.launch {
-                    if (state.currentPage == lastIndex) { state.scrollToPage(0) }
-                    // else state.animateScrollToPage(state.currentPage + 1)
-                    else state.scrollToPage(state.currentPage + 1)
-                }
+                viewModel.nextMasterpiece()
+//                scope.launch {
+////                    if (state.currentPage == lastIndex) { state.scrollToPage(0) }
+////                    // else state.animateScrollToPage(state.currentPage + 1)
+////                    else state.scrollToPage(state.currentPage + 1)
+//                    viewModel.nextMasterpiece()
+//                }
             }
         )
+        Spacer(modifier = Modifier.height(45.dp))
 
     }
 }
